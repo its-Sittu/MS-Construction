@@ -1271,39 +1271,65 @@
         padding-top: 25px !important;
     }
 
-    /* Dilip Buildcon Exact Match Hero Responsiveness */
+    /* Dilip Buildcon Exact Match Hero Responsiveness - Centered & Elevated on Mobile */
     .hero-dbl {
-        min-height: calc(100vh - 65px) !important;
+        min-height: calc(100vh - 68px) !important;
         height: 100vh !important;
+        height: 100svh !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+    }
+
+    .hero-dbl-overlay {
+        background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.52) 0%,
+            rgba(0, 0, 0, 0.6) 45%,
+            rgba(0, 0, 0, 0.82) 100%
+        ) !important;
     }
 
     .hero-dbl-content {
-        left: 6% !important;
-        right: 6% !important;
-        bottom: 8% !important;
-        max-width: 92% !important;
-        text-align: left !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        width: 92% !important;
+        max-width: 650px !important;
+        text-align: center !important;
+        padding: 0 12px !important;
+        z-index: 10 !important;
     }
 
     .hero-dbl-title {
-        font-size: clamp(23px, 6.5vw, 34px) !important;
-        line-height: 1.25 !important;
-        margin-bottom: 8px !important;
+        font-size: clamp(23px, 5.8vw, 36px) !important;
+        line-height: 1.22 !important;
+        margin-bottom: 12px !important;
+        text-align: center !important;
     }
 
     .hero-dbl-subtitle {
-        font-size: 13.5px !important;
-        line-height: 1.5 !important;
-        margin-bottom: 14px !important;
+        font-size: clamp(13.5px, 3.4vw, 15.5px) !important;
+        line-height: 1.58 !important;
+        margin: 0 auto 20px auto !important;
+        max-width: 95% !important;
+        text-align: center !important;
+        color: rgba(255, 255, 255, 0.95) !important;
     }
 
     .hero-dbl-dots {
-        gap: 8px !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        margin: 0 auto !important;
     }
 
     .dbl-dot {
-        width: 9px !important;
-        height: 9px !important;
+        width: 10px !important;
+        height: 10px !important;
     }
 
     .metrics-ribbon-grid {
@@ -1389,6 +1415,26 @@
 
 /* Smartphone Screens (<= 600px) */
 @media (max-width: 600px) {
+    /* Hero Banner Mobile Center & Compact Spacing */
+    .hero-dbl-content {
+        top: 48% !important;
+        width: 95% !important;
+        padding: 0 6px !important;
+    }
+    .hero-dbl-title {
+        font-size: clamp(21px, 6.2vw, 29px) !important;
+        line-height: 1.24 !important;
+        margin-bottom: 10px !important;
+    }
+    .hero-dbl-subtitle {
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+        margin: 0 auto 16px auto !important;
+    }
+    .hero-dbl-dots {
+        gap: 9px !important;
+    }
+
     /* General Container & Heading Padding */
     .container {
         padding-left: 16px !important;
