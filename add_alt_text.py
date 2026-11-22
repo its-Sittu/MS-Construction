@@ -7,71 +7,71 @@ def generate_alt_text(src, page_name=""):
 
     # Logo
     if "logo" in src_lower:
-        return "Builtline Construction Logo - Trusted Builders in Bangalore"
+        return "M/s M.S. Construction Logo - Trusted Builders in Bangalore"
 
     # Hero/Banner
     if any(x in src_lower for x in ["hero", "banner", "main", "bg", "background"]):
-        return "Best Construction Company in Bangalore - Builtline Construction"
+        return "Best Construction Company in Bangalore - M/s M.S. Construction"
 
     # About
     if "about" in src_lower:
-        return "Builtline Construction Team - Experienced Builders in Bangalore"
+        return "M/s M.S. Construction Team - Experienced Builders in Bangalore"
 
     # Residential
     if "residential" in src_lower:
-        return "Residential Building Construction in Bangalore - Builtline"
+        return "Residential Building Construction in Bangalore - M/s M.S. Construction"
 
     # Commercial
     if "commercial" in src_lower:
-        return "Commercial Building Construction in Bangalore - Builtline"
+        return "Commercial Building Construction in Bangalore - M/s M.S. Construction"
 
     # Renovation
     if "renovation" in src_lower:
-        return "Home Renovation Services in Bangalore - Builtline Construction"
+        return "Home Renovation Services in Bangalore - M/s M.S. Construction"
 
     # Structural
     if "structural" in src_lower:
-        return "Structural Works and Construction in Bangalore - Builtline"
+        return "Structural Works and Construction in Bangalore - M/s M.S. Construction"
 
     # Planning
     if "planning" in src_lower or "plan" in src_lower:
-        return "Construction Project Planning in Bangalore - Builtline"
+        return "Construction Project Planning in Bangalore - M/s M.S. Construction"
 
     # Quality/Safety
     if "quality" in src_lower or "safety" in src_lower:
-        return "Quality and Safety Standards in Construction - Builtline"
+        return "Quality and Safety Standards in Construction - M/s M.S. Construction"
 
     # Sustainable
     if "sustainable" in src_lower or "eco" in src_lower:
-        return "Sustainable Construction Solutions in Bangalore - Builtline"
+        return "Sustainable Construction Solutions in Bangalore - M/s M.S. Construction"
 
     # G+2
     if any(x in src_lower for x in ["g2", "gplus2", "g-2", "g_2"]):
-        return "G+2 House Construction in Bangalore - Builtline Construction"
+        return "G+2 House Construction in Bangalore - M/s M.S. Construction"
 
     # G+1
     if any(x in src_lower for x in ["g1", "gplus1", "g-1", "g_1"]):
-        return "G+1 House Construction in Bangalore - Builtline Construction"
+        return "G+1 House Construction in Bangalore - M/s M.S. Construction"
 
     # 30x40
     if "30x40" in src_lower or "30-40" in src_lower:
-        return "30x40 House Construction in Bangalore - Builtline Construction"
+        return "30x40 House Construction in Bangalore - M/s M.S. Construction"
 
     # Checklist
     if "checklist" in src_lower:
-        return "House Construction Checklist in Bangalore - Builtline"
+        return "House Construction Checklist in Bangalore - M/s M.S. Construction"
 
     # Turnkey
     if "turnkey" in src_lower:
-        return "Turnkey Construction Company in Bangalore - Builtline"
+        return "Turnkey Construction Company in Bangalore - M/s M.S. Construction"
 
     # Project/Work
     if any(x in src_lower for x in ["project", "work", "site", "construction"]):
-        return "Construction Project in Bangalore - Builtline Construction"
+        return "Construction Project in Bangalore - M/s M.S. Construction"
 
     # Team/Staff
     if any(x in src_lower for x in ["team", "staff", "worker", "engineer"]):
-        return "Builtline Construction Team - Professional Builders Bangalore"
+        return "M/s M.S. Construction Team - Professional Builders Bangalore"
 
     # Area wise — check page name too
     area_map = {
@@ -104,10 +104,10 @@ def generate_alt_text(src, page_name=""):
 
     for area, alt in area_map.items():
         if area in src_lower or area in page_lower:
-            return alt + " - Builtline Construction"
+            return alt + " - M/s M.S. Construction"
 
     # Default fallback
-    return "Construction Services in Bangalore - Builtline Construction"
+    return "Construction Services in Bangalore - M/s M.S. Construction"
 
 def process_html_files():
     # Get current directory
@@ -176,7 +176,7 @@ def process_html_files():
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("BUILTLINE CONSTRUCTION - AUTO ALT TEXT ADDER")
+    print("M/s M.S. CONSTRUCTION - AUTO ALT TEXT ADDER")
     print("=" * 50)
     print()
     process_html_files()

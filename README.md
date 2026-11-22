@@ -1,4 +1,4 @@
-Builtline Construction is a modern, responsive business website developed to represent a construction company digitally. The website provides complete information about services such as residential construction, renovation, interior design, and architectural planning. It is designed to improve customer engagement and generate leads through an interactive quote request system.
+M/s M.S. Construction is a modern, responsive business website developed to represent a construction company digitally. The website provides complete information about services such as residential construction, renovation, interior design, and architectural planning. It is designed to improve customer engagement and generate leads through an interactive quote request system.
 
 The platform focuses on clean UI/UX design, easy navigation, and mobile responsiveness to ensure a seamless experience across all devices.
 

@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="Builtline is a trusted construction company in Bangalore offering quality residential and commercial projects." name="description" />
+    <meta content="Explore civil infrastructure contracting projects across India by M/s M.S. Construction — Highways, Railway Viaducts, and Large-Scale Structural Works with Major Focus in Daltonganj, Medininagar, Dhanbad, Nabinagar, and Japla." name="description" />
     <link href="static/image/Logo-11.webp" rel="icon" type="image/webp" />
-    <title>Construction Project in Bangalore - Builtline</title>
+    <title>Civil Infrastructure Projects in India | M/s M.S. Construction</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="static/css/style.css?v=20260317" rel="stylesheet" />
-    <link href="static/css/media.css?v=2" rel="stylesheet" />
+    <link href="static/css/media.css?v=20261121_nav_v1" rel="stylesheet" />
     <!-- likes for font-awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.min.css" rel="stylesheet" />
@@ -16,22 +16,24 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" type="text/javascript"></script>
     <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet" />
-    <link href="https://builtlineconstruction.com/project.html" rel="canonical">
+    <link href="project.html" rel="canonical">
     <script type="application/ld+json">
     {
     "@context": "https://schema.org",
-    "@type": "HomeAndConstructionBusiness",
-    "name": "Builtline Construction Projects",
-    "image": "https://builtlineconstruction.com/static/image/Logo1.webp",
+    "@type": "GeneralContractor",
+    "name": "M/s M.S. Construction Projects",
+    "image": "https://builtlineconstruction.com/static/image/Logo-11.webp",
     "url": "https://builtlineconstruction.com/project.html",
     "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Malleshwaram",
-            "addressLocality": "Bengaluru",
-            "postalCode": "560003"
+            "streetAddress": "Shree Ram Path, Redma",
+            "addressLocality": "Medininagar, Daltonganj",
+            "addressRegion": "Jharkhand",
+            "postalCode": "822101",
+            "addressCountry": "IN"
         },
-    "telephone": "+91 9148498588",
-    "description": "View our completed and ongoing residential and commercial construction projects in Bangalore."
+    "telephone": "+91 9945599401",
+    "description": "Premier civil infrastructure projects across India by M/s M.S. Construction — Highways, Railway Viaducts, and Large-Scale Structural Works with Major Focus in Daltonganj, Medininagar, Dhanbad, Nabinagar, and Japla."
     }
     </script>
     <!-- Google Tag Manager -->
@@ -41,32 +43,259 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-WXSFV86F');</script>
     <!-- End Google Tag Manager -->
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <style>
+        .map-section-wrap {
+            margin: 30px 0 50px;
+        }
+        .map-controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 25px 0 20px;
+        }
+        .map-focus-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .map-focus-btn:hover, .map-focus-btn.active {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(15,23,42,0.18);
+        }
+        .map-focus-btn .focus-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #f59e0b;
+            box-shadow: 0 0 6px rgba(245,158,11,0.8);
+        }
+        .map-focus-btn.active .focus-dot {
+            background: #38bdf8;
+            box-shadow: 0 0 8px #38bdf8;
+        }
+        .map-container-box {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.08);
+            background: #f1f5f9;
+        }
+        #indiaProjectMap {
+            height: 560px;
+            width: 100%;
+            z-index: 1;
+        }
+        /* Leaflet Custom Pulsing Pin */
+        .custom-focus-pin {
+            position: relative;
+            text-align: center;
+        }
+        .pin-pulse {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 44px;
+            height: 44px;
+            margin-left: -22px;
+            margin-top: -22px;
+            border-radius: 50%;
+            background: rgba(245, 158, 11, 0.45);
+            animation: pinRadar 2s infinite cubic-bezier(0, 0.2, 0.8, 1);
+            pointer-events: none;
+        }
+        .pin-core {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+            border: 2.5px solid #ffffff;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -16px;
+            margin-top: -24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pin-core i {
+            transform: rotate(45deg);
+            color: #ffffff;
+            font-size: 13px;
+        }
+        @keyframes pinRadar {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+        /* Permanent Tooltip */
+        .leaflet-tooltip.focus-permanent-tooltip {
+            background: #0f172a;
+            color: #ffffff;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .leaflet-tooltip.focus-permanent-tooltip::before {
+            border-top-color: #0f172a;
+        }
+        .focus-permanent-tooltip .loc-title {
+            font-weight: 700;
+            color: #ffffff;
+            display: block;
+            line-height: 1.2;
+        }
+        .focus-permanent-tooltip .loc-tag {
+            font-size: 10px;
+            font-weight: 700;
+            color: #fbbf24;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        /* Leaflet Popup Card */
+        .leaflet-popup-content-wrapper {
+            border-radius: 14px;
+            padding: 4px;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.22);
+        }
+        .map-popup-card {
+            padding: 8px 6px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .map-popup-badge {
+            display: inline-block;
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .map-popup-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 6px 0;
+        }
+        .map-popup-card p {
+            font-size: 12px;
+            line-height: 1.5;
+            color: #475569;
+            margin: 0 0 8px 0;
+        }
+        .map-popup-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .map-popup-specs span {
+            font-size: 11px;
+            background: #f1f5f9;
+            color: #0369a1;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        /* 5 Major Focus Cards Showcase */
+        .focus-hubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+            margin-top: 30px;
+        }
+        .focus-hub-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px 18px;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            cursor: pointer;
+            border-top: 4px solid #f59e0b;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+        }
+        .focus-hub-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border-top-color: #0284c7;
+        }
+        .focus-hub-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #b45309;
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 8px;
+            width: fit-content;
+        }
+        .focus-hub-card h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 6px 0;
+        }
+        .focus-hub-card p {
+            font-size: 12px;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        .focus-hub-foot {
+            margin-top: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
 </head>
 <body>
     <section class="section-container">
         <header class="hero-header container">
- <img src="static/image/Logo1.webp" alt="Builtline logo" loading="lazy" class="Image">
+ <img src="static/image/Logo1.webp" alt="M/s M.S. Construction logo" loading="lazy" class="Image">
        <div class="menu-toggle">
             <i class="fa-solid fa-bars"></i>
         </div>            <nav>
                 <a href="index.html"><span>HOME</span></a>
-                <div class="nav-dropdown">
-                        <a href="about.html">ABOUT</a>
-                        <div class="dropdown-menu">
-                            <a href="construction-landing.html">BUILD HOME</a>
-                            <hr>
-                            <a href="booking.html">APPOINTMENT</a>  
-                        </div>
-                    </div>
+                <a href="about.html">ABOUT</a>
                 <a href="services.html">SERVICE</a>
                 <a href="project.html">PROJECTS</a>
                  <a href="blogs.html">BLOGS</a>
-            <div class="nav-dropdown">
-                    <a href="contact.html">CONTACT</a>
-                    <div class="dropdown-menu" style="width: 150px; padding: 10px;">
-                        <a href="https://builtlineconstruction.com/login.php">LOGIN</a> 
-                    </div>
-                </div>
+            <a href="contact.html">CONTACT</a>
                 <a href="career.html">CAREER</a> 
                 <a href="package.html" class="fill-btn">
                     <span>GET A FREE QUOTE</span>
@@ -77,27 +306,14 @@
 
         <header class="scroll-header">
             <div class="scroll-container container">
-            <img src="static/image/Logo-11.webp" alt="Builtline logo" loading="lazy">
+            <img src="static/image/Logo-11.webp" alt="M/s M.S. Construction logo" loading="lazy">
                 <navbar>
                     <a href="index.html"><span>HOME</span></a>
-                    <div class="nav-dropdown">
-                        <a href="about.html">ABOUT</a>
-                        <div class="dropdown-menu">
-                            <a href="construction-landing.html">BUILD HOME</a>
-                            <hr>
-                            <a href="booking.html">APPOINTMENT</a> 
-                            
-                        </div>
-                    </div>
+                    <a href="about.html">ABOUT</a>
                     <a href="services.html">SERVICE</a>
                     <a href="project.html">PROJECTS</a>
                      <a href="blogs.html">BLOGS</a>
-                    <div class="nav-dropdown">
-                        <a href="contact.html">CONTACT</a>
-                        <div class="dropdown-menu">
-                        <a href="https://builtlineconstruction.com/login.php">LOGIN</a>
-                        </div>
-                    </div>
+                    <a href="contact.html">CONTACT</a>
                     <a href="career.html">CAREER</a> 
                     <a href="package.html" class="class-btn">GET A QUOTE<i class="fa-solid fa-arrow-right-long"></i></a>
                 </navbar>
@@ -109,12 +325,68 @@
             <div class="container">
                 <div class="expertise-header" data-aos="zoom-in">
                     <center>
-                        <h2>Construction Project in Bangalore</h2>
+                        <span class="tag" style="display:inline-block; margin-bottom:8px; font-weight:700; letter-spacing:2px; font-size:12px; color:#f59e0b; text-transform:uppercase;">STRATEGIC OPERATIONAL MAP • INDIA</span>
+                        <h2>Civil Infrastructure Projects in India</h2>
                         <div class="underline"></div>
+                        <p style="max-width: 820px; margin: 12px auto 0; color: #64748b; font-size: 15px; line-height: 1.6;">
+                            Strategic civil infrastructure footprints and active project corridors across India. Pinned below are our <strong>Major Focus</strong> hubs driving highways, railway viaducts, heavy RCC structures, and government EPC works.
+                        </p>
                     </center>
                 </div>
-                <div class="project-iframe">
-                    <iframe height="660" src="https://www.google.com/maps/d/embed?mid=1MaTbGuapJlmuUnANODRlsbEerc9-Ugk&amp;ehbc=2E312F" width="100%"></iframe>
+
+                <div class="map-section-wrap" data-aos="fade-up">
+                    <!-- Map Focus Control Buttons -->
+                    <div class="map-controls-bar">
+                        <button class="map-focus-btn active" onclick="focusLocation('all', this)"><span class="focus-dot"></span> All Strategic Zones</button>
+                        <button class="map-focus-btn" onclick="focusLocation('medininagar', this)"><span class="focus-dot"></span> Medininagar (HQ) ★ Major Focus</button>
+                        <button class="map-focus-btn" onclick="focusLocation('daltonganj', this)"><span class="focus-dot"></span> Daltonganj ★ Major Focus</button>
+                        <button class="map-focus-btn" onclick="focusLocation('dhanbad', this)"><span class="focus-dot"></span> Dhanbad ★ Major Focus</button>
+                        <button class="map-focus-btn" onclick="focusLocation('nabinagar', this)"><span class="focus-dot"></span> Nabinagar ★ Major Focus</button>
+                        <button class="map-focus-btn" onclick="focusLocation('japla', this)"><span class="focus-dot"></span> Japla ★ Major Focus</button>
+                    </div>
+
+                    <!-- Interactive India/Regional Map -->
+                    <div class="map-container-box">
+                        <div id="indiaProjectMap"></div>
+                    </div>
+
+                    <!-- 5 Major Focus Hubs Grid -->
+                    <div class="focus-hubs-grid">
+                        <div class="focus-hub-card" onclick="focusLocation('medininagar')">
+                            <span class="focus-hub-badge">HEADQUARTERS • MAJOR FOCUS</span>
+                            <h4>Medininagar</h4>
+                            <p>Central headquarters, corporate command, central laboratory, equipment fleet, and heavy engineering logistics.</p>
+                            <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
+                        </div>
+
+                        <div class="focus-hub-card" onclick="focusLocation('daltonganj')">
+                            <span class="focus-hub-badge">CIVIL INFRA • MAJOR FOCUS</span>
+                            <h4>Daltonganj</h4>
+                            <p>State highway corridor pavements (IRC:37/58), PWD civil works, storm drainage networks & municipal tenders.</p>
+                            <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
+                        </div>
+
+                        <div class="focus-hub-card" onclick="focusLocation('dhanbad')">
+                            <span class="focus-hub-badge">RAIL & INDUSTRIAL • MAJOR FOCUS</span>
+                            <h4>Dhanbad</h4>
+                            <p>Heavy-axle rail viaducts, elevated pier launching, freight corridor infrastructure & structural steel fabrication.</p>
+                            <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
+                        </div>
+
+                        <div class="focus-hub-card" onclick="focusLocation('nabinagar')">
+                            <span class="focus-hub-badge">ENERGY CORRIDOR • MAJOR FOCUS</span>
+                            <h4>Nabinagar</h4>
+                            <p>Power plant civil corridors, dedicated railway spur viaducts, subgrade earthworks & monolithic foundations.</p>
+                            <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
+                        </div>
+
+                        <div class="focus-hub-card" onclick="focusLocation('japla')">
+                            <span class="focus-hub-badge">REGIONAL WORKS • MAJOR FOCUS</span>
+                            <h4>Japla</h4>
+                            <p>RCC box structures, river bridge abutments, rural corridor connectivity & structural concrete frameworks.</p>
+                            <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="counters">
@@ -150,337 +422,67 @@
                     </div>
                 </div>
 
-                <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="chikkabidarakallu.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image1">
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk1.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk3.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk4.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk5.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk6.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk7.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk8.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk9.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk10.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk11.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk12.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk13.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk14.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk15.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk16.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk17.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk18.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk19.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk20.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/cbk21.webp" /> 
                             </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+3 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Chikkabidarakallu</h3>
-                                </div>
-                            </div>
-                        </div>
+        </div>
+
+        <!-- Infrastructure CTA Section -->
+        <div class="container" style="margin-top: 50px; margin-bottom: 40px;" data-aos="zoom-in">
+            <div style="background: linear-gradient(135deg, #09121f 0%, #0f1f38 100%); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 50px 30px; text-align: center; color: #ffffff; box-shadow: 0 15px 35px rgba(0,0,0,0.15);">
+                <span style="display:inline-block; background:rgba(245, 158, 11, 0.15); color:#f59e0b; border:1px solid rgba(245, 158, 11, 0.35); font-size:12px; font-weight:700; letter-spacing:2px; padding:6px 16px; border-radius:20px; text-transform:uppercase; margin-bottom:16px;">TENDER &amp; EPC INQUIRIES</span>
+                <h2 style="font-size: clamp(26px, 3.5vw, 38px); font-weight: 800; color: #ffffff; margin-bottom: 14px;">Partner With M/s M.S. Construction</h2>
+                <p style="max-width: 720px; margin: 0 auto 28px; color: #94a3b8; font-size: 15px; line-height: 1.6;">
+                    Executing high-precision highways, railway viaducts, heavy RCC structures, and public works across India. Submit tender specifications or request detailed technical evaluation.
+                </p>
+                <div style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;">
+                    <a href="contact.html" style="background: #f59e0b; color: #0f172a; padding: 12px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <span>SUBMIT TENDER INQUIRY</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </a>
+                    <a href="services.html" style="background: rgba(255,255,255,0.08); color: #ffffff; border: 1px solid rgba(255,255,255,0.25); padding: 12px 28px; border-radius: 8px; font-weight: 600; text-decoration: none;">
+                        <span>OUR AREAS OF EXPERTISE</span>
                     </a>
                 </div>
-
-
-                <!-- <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Gangondanahalli.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image img2">
-                                <img alt="Home Renovation Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/Renovation.webp" /> 
-                                <img alt="Commercial Building Construction in Bangalore - Builtline" loading="lazy" src="static/image/Commercial-building.webp" /> 
-                                <img alt="Structural Works and Construction in Bangalore - Builtline" loading="lazy" src="static/image/structural-works.webp" /> 
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+3 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Gangondanahalli</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div> -->
-
-
-                <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Malleshwaram9thCrossRoad.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image3">
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshwaramb2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshwaramb3.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshwaramblock1.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshwaramb4.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshwaramb5.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshwaramb7.webp" /> 
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+4 Floor project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Malleshwaram 9th Cross</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-
-                <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Malleshwaram10thCrossRoad.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram1.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram3.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram4.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram5.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram6.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram7.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram8.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram9.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram10.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram11.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram12.webp" /> 
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+4 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Malleshwaram 10th Cross</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="RRNagar.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram1.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram3.webp" /> 
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+2 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>RRNagar</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div> -->
-
-
-                <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Banashankari3rdStage.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram1.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram3.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/malleshawaram4.webp" /> 
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+4 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Banashankari 3rd Stage</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Hemmigepura.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img alt="Construction Company in Hemmigepura Bangalore - Builtline Construction" loading="lazy" src="static/image/Hemmigepura.webp" /> 
-                                <img alt="Construction Company in Hemmigepura Bangalore - Builtline Construction" loading="lazy" src="static/image/Hemmigepura1.webp" /> 
-                                <img alt="Construction Company in Hemmigepura Bangalore - Builtline Construction" loading="lazy" src="static/image/Hemmigepura2.webp" /> 
-                                <img alt="Construction Company in Hemmigepura Bangalore - Builtline Construction" loading="lazy" src="static/image/Hemmigepura3.webp" /> 
-                                <img alt="Construction Company in Hemmigepura Bangalore - Builtline Construction" loading="lazy" src="static/image/Hemmigepura4.webp" /> 
-                                <img alt="Construction Company in Hemmigepura Bangalore - Builtline Construction" loading="lazy" src="static/image/Hemmigepura5.webp" /> 
-                                <img alt="Construction Company in Hemmigepura Bangalore - Builtline Construction" loading="lazy" src="static/image/Hemmigepura6.webp" /> 
-                                <img alt="Construction Company in Hemmigepura Bangalore - Builtline Construction" loading="lazy" src="static/image/Hemmigepura7.webp" /> 
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+3 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Hemmigepura</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                  <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Policelayout.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p3.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p4.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p5.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p6.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p7.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p8.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p9.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/p10.webp" />     
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+2 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Police Layout</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                 <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Vidyapeeta.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/v2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/v3.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/v4.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/v11.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/v9.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/v10.webp" />   
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+3 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Vidyapeeta</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-              
-                 <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="SahakaranNagar.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img src="static/image/s1.webp" alt="Construction company in Sahakaranagar Bangalore" loading="lazy">
-                                <img src="static/image/s2.webp" alt="Best builders in Sahakaranagar" loading="lazy">
-                                <img src="static/image/s3.webp" alt="Premium construction projects Bangalore" loading="lazy">
-                                <img src="static/image/s4.webp" alt="Residential building Sahakaranagar Bangalore" loading="lazy">
-                                <img src="static/image/s5.webp" alt="Construction company in Sahakaranagar" loading="lazy">
-                                <img src="static/image/s7.webp" alt="Civil contractors Bangalore" loading="lazy">
-                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+3 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>SahakaranNagar</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="M.G.Road.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img alt="G+1 House Construction in Bangalore - Builtline Construction" loading="lazy" src="static/image/MG10.webp" /> 
-                                <img alt="G+2 House Construction in Bangalore - Builtline Construction" loading="lazy" src="static/image/MG11.webp" /> 
-                                 <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/MG12.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/MG4.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/MG5.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/MG6.webp" />   
-                           </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+1 Floor with Renovation Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>M G Road</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Hebbal-1.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                 <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/h1.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/h2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/h3.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/h4.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/h5.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/h6.webp" /> 
-                           </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+3 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Hebbal</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="project-wrapper row">
-                    <a class="project-card col-lg-2 col-md-4 col-sm-6 col-12" href="Mahadevpura.html">
-                        <div class="slider" id="scrollWrapper">
-                            <div class="project-image image4">
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev1 (32).webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev10.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev2.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev3.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev4.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev5.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev6.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev7.webp" /> 
-                                <img alt="Construction Services in Bangalore - Builtline Construction" loading="lazy" src="static/image/mahadev9.webp" />                            </div>
-                            <div class="content">
-                                <div class="projectText">
-                                    <h3>G+2 Floor Project</h3>
-                                </div>
-                                <div class="projectText">
-                                    <h3>Mahadevpura</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                
             </div>
         </div>
 
-        <!-- whatsapp -->
-        <a class="whatsapp-float" href="https://wa.me/919148498588" target="_blank">
-            <i class="fa-brands fa-whatsapp"></i>
-        </a>
-        <div id="scrollProgress">
+        <!-- Footer Section -->
+        <div class="footer-section" style="background-color: darkgoldenrod; margin-top: 50px;">
+            <div class="footer-container" style="width: 100%; display: flex; flex-wrap: wrap; padding: 40px 5%; justify-content: space-between; gap: 30px;">
+                <div class="footer-box col-lg-3 col-md-6 col-12">
+                    <h3 style="color: #ffffff; font-weight: 700; margin-bottom: 15px;">M/s M.S. Construction</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.6; font-size: 14px;">
+                        Premier civil engineering and infrastructure contractors specializing in highways, railway viaducts, real estate structures, and government projects.
+                    </p>
+                </div>
+                <div class="footer-box col-lg-3 col-md-6 col-12">
+                    <h3 style="color: #ffffff; font-weight: 700; margin-bottom: 15px;">Head Office</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 14px; margin-bottom: 8px;"><i class="fa-solid fa-location-dot"></i> Shree Ram Path, Redma, Medininagar, Daltonganj, Jharkhand - 822101</p>
+                    
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 14px;"><i class="fa-solid fa-envelope"></i> msconstruction@gmail.com</p>
+                </div>
+                <div class="footer-box col-lg-2 col-md-6 col-12">
+                    <h3 style="color: #ffffff; font-weight: 700; margin-bottom: 15px;">Quick Links</h3>
+                    <p><a href="index.html" style="color: #ffffff; text-decoration: none;">Home</a></p>
+                    <p><a href="about.html" style="color: #ffffff; text-decoration: none;">About Us</a></p>
+                    <p><a href="services.html" style="color: #ffffff; text-decoration: none;">Services</a></p>
+                    <p><a href="project.html" style="color: #ffffff; text-decoration: none;">Projects</a></p>
+                    <p><a href="contact.html" style="color: #ffffff; text-decoration: none;">Contact</a></p>
+                </div>
+                <div class="footer-box col-lg-3 col-md-6 col-12">
+                    <h3 style="color: #ffffff; font-weight: 700; margin-bottom: 15px;">Strategic Focus Hubs</h3>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 14px; margin-bottom: 6px;"><i class="fa-solid fa-circle-check" style="color:#fde047;"></i> Medininagar (Head Office)</p>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 14px; margin-bottom: 6px;"><i class="fa-solid fa-circle-check" style="color:#fde047;"></i> Daltonganj (Civil Infra)</p>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 14px; margin-bottom: 6px;"><i class="fa-solid fa-circle-check" style="color:#fde047;"></i> Dhanbad (Rail Viaducts)</p>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 14px; margin-bottom: 6px;"><i class="fa-solid fa-circle-check" style="color:#fde047;"></i> Nabinagar (Power &amp; Rails)</p>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 14px;"><i class="fa-solid fa-circle-check" style="color:#fde047;"></i> Japla (Regional Works)</p>
+                </div>
+            </div>
+            <div style="text-align: center; padding: 18px 20px; background: rgba(0, 0, 0, 0.15); color: rgba(255, 255, 255, 0.85); font-size: 13px;">
+                &copy; <span id="currentYear"></span> M/s M.S. CONSTRUCTION &bull; All Rights Reserved.
+            </div>
+        </div>
+
+<div id="scrollProgress">
             <svg height="60" width="60">
                 <circle cx="30" cy="30" fill="none" r="26" stroke="#e0e0e0" stroke-width="4"></circle>
                 <circle cx="30" cy="30" fill="none" id="progressCircle" r="26" stroke="orange" stroke-linecap="round" stroke-width="4"></circle>
@@ -490,61 +492,152 @@
     </section>
 
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <!-- Leaflet Map JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        function initMap() {
-        const bangalore = { lat: 12.9716, lng: 77.5946 }; // Bangalore center
+        document.addEventListener("DOMContentLoaded", function() {
+            const mapContainer = document.getElementById("indiaProjectMap");
+            if (!mapContainer || typeof L === "undefined") return;
 
-        const map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 13, // Adjust zoom to focus on city
-            center: bangalore,
-        });
+            // 5 Major Focus Locations
+            const focusHubs = [
+                {
+                    id: "medininagar",
+                    name: "Medininagar",
+                    title: "Medininagar (Head Office)",
+                    coords: [24.0435, 84.0684],
+                    badge: "HEADQUARTERS • MAJOR FOCUS",
+                    desc: "Central Headquarters, corporate engineering command, heavy fleet depot, and state highway works.",
+                    specs: ["Head Office", "Machinery Fleet", "Highway Works", "QA/QC Lab"]
+                },
+                {
+                    id: "daltonganj",
+                    name: "Daltonganj",
+                    title: "Daltonganj Hub",
+                    coords: [24.0350, 84.0750],
+                    badge: "CIVIL INFRA • MAJOR FOCUS",
+                    desc: "State highway pavements (IRC:37 & IRC:58), PWD civil infrastructure, drainage networks & municipal tenders.",
+                    specs: ["State Highways", "PWD Tenders", "Flexible & Rigid Pavements"]
+                },
+                {
+                    id: "dhanbad",
+                    name: "Dhanbad",
+                    title: "Dhanbad Hub",
+                    coords: [23.7957, 86.4304],
+                    badge: "RAIL & INDUSTRIAL • MAJOR FOCUS",
+                    desc: "Heavy-axle railway viaducts, elevated pier casting, ballastless track beds & industrial structural works.",
+                    specs: ["25t–32.5t Rail Axle", "Girder Launching", "Industrial RCC"]
+                },
+                {
+                    id: "nabinagar",
+                    name: "Nabinagar",
+                    title: "Nabinagar Hub",
+                    coords: [24.6111, 84.1256],
+                    badge: "ENERGY CORRIDOR • MAJOR FOCUS",
+                    desc: "Power project transport corridors, dedicated rail spur lines, subgrade stabilization & heavy foundations.",
+                    specs: ["Power Plant Corridors", "Rail Spurs", "Heavy Foundations"]
+                },
+                {
+                    id: "japla",
+                    name: "Japla",
+                    title: "Japla Hub",
+                    coords: [24.5262, 83.9961],
+                    badge: "REGIONAL WORKS • MAJOR FOCUS",
+                    desc: "RCC box culverts, bridge pier structures, regional roads, and monolithic concrete frameworks.",
+                    specs: ["RCC Box Culverts", "River Abutments", "Rural Corridors"]
+                }
+            ];
 
-        // Add your project markers
-        const projects = [
-            { position: { lat: 12.9716, lng: 77.5946 }, title: "Project 1" },
-            { position: { lat: 12.9850, lng: 77.6050 }, title: "Project 2" },
-            { position: { lat: 12.9600, lng: 77.5800 }, title: "Project 3" },
-        ];
+            // Initialize Leaflet Map
+            const map = L.map("indiaProjectMap", {
+                scrollWheelZoom: false,
+                zoomControl: true
+            }).setView([24.2, 85.0], 8);
 
-        projects.forEach(p => {
-            new google.maps.Marker({
-            position: p.position,
-            map: map,
-            title: p.title,
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 18,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Custom Pulsing Amber Marker
+            const pinIcon = L.divIcon({
+                className: "custom-focus-pin",
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                popupAnchor: [0, -22],
+                html: '<div class="pin-pulse"></div><div class="pin-core"><i class="fa-solid fa-location-dot"></i></div>'
             });
-        });
-        }
 
-        window.onload = initMap;
+            const markers = {};
+            const bounds = L.latLngBounds();
+
+            focusHubs.forEach(hub => {
+                const marker = L.marker(hub.coords, { icon: pinIcon }).addTo(map);
+                bounds.extend(hub.coords);
+
+                // Permanent visible label on pin
+                marker.bindTooltip(
+                    '<span class="loc-title">' + hub.name + '</span><span class="loc-tag">★ MAJOR FOCUS</span>',
+                    {
+                        permanent: true,
+                        direction: "top",
+                        offset: [0, -14],
+                        className: "focus-permanent-tooltip"
+                    }
+                );
+
+                // Clickable Popup
+                const specsHtml = hub.specs.map(s => '<span>' + s + '</span>').join('');
+                marker.bindPopup(
+                    '<div class="map-popup-card">' +
+                        '<span class="map-popup-badge">' + hub.badge + '</span>' +
+                        '<h4>' + hub.title + '</h4>' +
+                        '<p>' + hub.desc + '</p>' +
+                        '<div class="map-popup-specs">' + specsHtml + '</div>' +
+                    '</div>'
+                );
+
+                markers[hub.id] = marker;
+            });
+
+            // Fit all 5 pins into initial view with padding
+            map.fitBounds(bounds, { padding: [55, 55], maxZoom: 10 });
+
+            // Global focus function for buttons and cards
+            window.focusLocation = function(targetId, btnEl) {
+                // Update active button state
+                document.querySelectorAll(".map-focus-btn").forEach(b => b.classList.remove("active"));
+                if (btnEl) {
+                    btnEl.classList.add("active");
+                }
+
+                if (targetId === "all") {
+                    map.fitBounds(bounds, { padding: [55, 55] });
+                    return;
+                }
+
+                const marker = markers[targetId];
+                if (marker) {
+                    map.flyTo(marker.getLatLng(), 11, { duration: 1.2 });
+                    setTimeout(() => {
+                        marker.openPopup();
+                    }, 1250);
+
+                    // Scroll to map if needed
+                    mapContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            };
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.min.js"></script>
     <script>
             AOS.init();
+        const yrEl = document.getElementById("currentYear");
+        if (yrEl) yrEl.textContent = new Date().getFullYear();
         </script>
-    <script>
-            const cards = document.querySelectorAll('.video-card');
-            const videopopup = document.getElementById('videoPopup');
-            const iframe = document.getElementById('videoFrame');
 
-            cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const videoId = card.getAttribute('data-video');
-
-                    // IMPORTANT: change iframe src every time
-                    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
-
-                    videopopup.style.display = 'flex';
-                });
-            });
-
-            function closeVideo() {
-                iframe.src = "";   // stop previous video
-                videopopup.style.display = 'none';
-            }
-        </script>
     <script>
         window.addEventListener("scroll", () => {
             if (window.scrollY > 120) {
@@ -585,7 +678,7 @@
 
             });
         </script>
-        <script src="static/script.js"></script>
+        <script src="static/script.js?v=20261121_nav_v1"></script>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-WXSFV86F" style="display:none;visibility:hidden" width="0"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->

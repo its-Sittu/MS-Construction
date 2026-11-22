@@ -220,22 +220,14 @@ h2 {
 </div>
 </section>
 <script>
-// ZONE DATA
+// ZONE DATA (East: 90%, North: 70%, North-East: 60%)
 const zoneLabels = [
-    "North",
-    "North-West",
-    "West",
-    "South-West",
-    "South",
-    "South-East",
     "East",
+    "North",
     "North-East"
 ];
 
-const zoneCounts = [8, 7, 6, 5, 9, 7, 6, 4];
-
-// ✅ 1 Project = 10 (Displayed as % but not real percentage logic)
-const zoneValues = zoneCounts.map(count => count * 10);
+const zoneValues = [90, 70, 60];
 
 
 // GREEN GRADIENT
@@ -255,10 +247,10 @@ const zoneChart = new Chart(zoneCtx, {
     data: {
         labels: zoneLabels,
         datasets: [{
-            data: new Array(zoneCounts.length).fill(0),
+            data: new Array(zoneValues.length).fill(0),
             backgroundColor: createGreenGradient(zoneCtx),
             borderRadius: 10,
-            barThickness: 32
+            barThickness: 38
         }]
     },
     options: {
@@ -481,39 +473,97 @@ const statusChart = new Chart(statusCtx, {
 const pieCtx = document.getElementById("projectTypePieChart").getContext("2d");
 
 const projectTypePieChart = new Chart(pieCtx, {
-    type: "pie",
+    type: "doughnut",
     data: {
-        labels: ["Residential", "Commercial", "Interiors", "Renovation"],
+        labels: ["Construction Work", "Commercial", "Interiors", "Renovation"],
         datasets: [{
             data: [60, 25, 10, 5],
             backgroundColor: [
-                "#16a34a",  // Residential
-                "#22c55e",  // Commercial
-                "#4ade80",  // Interiors
-                "#bbf7d0"   // Renovation
+                "#10b981",  // Construction Work (Vibrant Emerald)
+                "#2563eb",  // Commercial (Corporate Blue)
+                "#f59e0b",  // Interiors (Amber Gold)
+                "#8b5cf6"   // Renovation (Modern Violet)
+            ],
+            hoverBackgroundColor: [
+                "#059669",
+                "#1d4ed8",
+                "#d97706",
+                "#7c3aed"
             ],
             borderColor: "#ffffff",
-            borderWidth: 2
+            borderWidth: 3,
+            borderRadius: 6,
+            spacing: 2,
+            hoverOffset: 10
         }]
     },
     options: {
         responsive: true,
+        maintainAspectRatio: true,
+        cutout: "62%",
         animation: {
-            duration: 2000
+            animateScale: true,
+            animateRotate: true,
+            duration: 2000,
+            easing: "easeOutQuart"
         },
         plugins: {
             legend: {
-                position: "bottom"
+                position: "bottom",
+                labels: {
+                    padding: 16,
+                    usePointStyle: true,
+                    pointStyle: "circle",
+                    font: {
+                        size: 13,
+                        weight: "600",
+                        family: "'Poppins', sans-serif"
+                    },
+                    generateLabels: function(chart) {
+                        const data = chart.data;
+                        return data.labels.map((label, i) => ({
+                            text: `${label} (${data.datasets[0].data[i]}%)`,
+                            fillStyle: data.datasets[0].backgroundColor[i],
+                            strokeStyle: data.datasets[0].backgroundColor[i],
+                            lineWidth: 0,
+                            hidden: false,
+                            index: i
+                        }));
+                    }
+                }
             },
             tooltip: {
+                backgroundColor: "rgba(15, 23, 42, 0.94)",
+                padding: 12,
+                cornerRadius: 8,
+                titleFont: { size: 14, weight: "bold" },
+                bodyFont: { size: 13 },
                 callbacks: {
                     label: function(context) {
-                        return context.label + " - " + context.raw + "%";
+                        return " " + context.label + ": " + context.raw + "%";
                     }
                 }
             }
         }
-    }
+    },
+    plugins: [{
+        id: "centerText",
+        beforeDraw(chart) {
+            const { width, height, ctx } = chart;
+            ctx.save();
+            ctx.font = "bold 26px 'Poppins', sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "#1e293b";
+            const centerY = chart.chartArea ? (chart.chartArea.top + chart.chartArea.bottom) / 2 : height / 2;
+            const centerX = chart.chartArea ? (chart.chartArea.left + chart.chartArea.right) / 2 : width / 2;
+            ctx.fillText("100%", centerX, centerY - 8);
+            ctx.font = "600 11px 'Poppins', sans-serif";
+            ctx.fillStyle = "#64748b";
+            ctx.fillText("SERVICES", centerX, centerY + 14);
+            ctx.restore();
+        }
+    }]
 });
 
 
@@ -551,10 +601,10 @@ window.onload = function () {
 </script>
 <div class="card">
 <!-- <div class="image"></div> -->
-<img alt="Construction Services in Bangalore - Builtline Construction" class="image" loading="lazy" src="static/image/client1.jpg" /> 
+<img alt="Construction Services in Bangalore - M/s M.S. Construction" class="image" loading="lazy" src="static/image/client1.jpg" /> 
   <div class="card-info">
 <span>George Johnson</span>
-<p>We hired Builtline Construction for a major kitchen remodel, and they exceeded our expectations. The team was fantastic. They were clean, punctual, and highly skilled.</p>
+<p>We hired M/s M.S. Construction for a major kitchen remodel, and they exceeded our expectations. The team was fantastic. They were clean, punctual, and highly skilled.</p>
 </div>
 <div class="stars">
 <i class="fas fa-star"></i>
