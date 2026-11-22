@@ -2285,7 +2285,8 @@ input, textarea, select {
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
 }
 
-.flip-card:hover .flip-inner {
+.flip-card:hover .flip-inner,
+.flip-card.flipped .flip-inner {
   transform: rotateY(180deg);
 }
 

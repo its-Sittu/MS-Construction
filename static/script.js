@@ -305,12 +305,12 @@ function slide(direction) {
   const track = document.getElementById("expertTrack");
   if (!track || !track.children.length) return;
   const card = track.children[0];
-  const gap = 24;
+  const computedGap = parseFloat(window.getComputedStyle(track).gap) || 20;
 
-  const cardWidth = card.offsetWidth + gap;
+  const cardWidth = card.offsetWidth + computedGap;
   const totalCards = track.children.length;
   const viewportWidth = track.parentElement ? track.parentElement.offsetWidth : 940;
-  const visibleCards = Math.max(1, Math.floor((viewportWidth + gap) / cardWidth));
+  const visibleCards = Math.max(1, Math.floor((viewportWidth + computedGap) / cardWidth));
   const maxIndex = Math.max(0, totalCards - visibleCards);
 
   expertIndex += direction;
@@ -320,6 +320,55 @@ function slide(direction) {
 
   track.style.transform = `translateX(-${expertIndex * cardWidth}px)`;
 }
+
+// Mobile Touch Swipe & Tap-to-Flip Support for Expertise Carousel
+document.addEventListener("DOMContentLoaded", function () {
+  const track = document.getElementById("expertTrack");
+  if (!track) return;
+
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  track.addEventListener("touchstart", function (e) {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  track.addEventListener("touchend", function (e) {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        slide(1); // swipe left -> next card
+      } else {
+        slide(-1); // swipe right -> prev card
+      }
+    }
+  }, { passive: true });
+
+  // Mobile Tap to Flip Card
+  const cards = track.querySelectorAll(".flip-card");
+  cards.forEach(function (c) {
+    c.addEventListener("click", function () {
+      if (window.innerWidth <= 991) {
+        c.classList.toggle("flipped");
+      }
+    });
+  });
+
+  // Re-align on resize or orientation change
+  window.addEventListener("resize", function () {
+    const card = track.children[0];
+    if (!card) return;
+    const computedGap = parseFloat(window.getComputedStyle(track).gap) || 20;
+    const cardWidth = card.offsetWidth + computedGap;
+    const totalCards = track.children.length;
+    const viewportWidth = track.parentElement ? track.parentElement.offsetWidth : 940;
+    const visibleCards = Math.max(1, Math.floor((viewportWidth + computedGap) / cardWidth));
+    const maxIndex = Math.max(0, totalCards - visibleCards);
+    if (expertIndex > maxIndex) expertIndex = maxIndex;
+    track.style.transform = `translateX(-${expertIndex * cardWidth}px)`;
+  });
+});
 
 // copyright
 
