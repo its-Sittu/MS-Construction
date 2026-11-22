@@ -669,7 +669,9 @@ function initAboutSlider() {
     if (!track) return;
 
     const dots = document.querySelectorAll('.about-dot');
-    const totalOriginalSlides = 5;
+    const allSlides = track.querySelectorAll('.about-slide');
+    const totalSlides = allSlides.length;
+    const totalOriginalSlides = Math.max(1, totalSlides - 1);
     let currentIdx = 0;
     let sliderTimer = null;
     let isTransitioning = false;
@@ -679,16 +681,16 @@ function initAboutSlider() {
         isTransitioning = true;
         currentIdx = idx;
 
-        // Slide width in percent: each slide is 100 / 6 = 16.666667%
+        // Slide width in percent: each slide is 100 / totalSlides %
         track.style.transition = 'transform 0.65s cubic-bezier(0.25, 1, 0.5, 1)';
-        track.style.transform = `translate3d(-${currentIdx * (100 / 6)}%, 0, 0)`;
+        track.style.transform = `translate3d(-${currentIdx * (100 / totalSlides)}%, 0, 0)`;
 
-        // Update dots (0 to 4)
+        // Update dots
         const dotIdx = currentIdx % totalOriginalSlides;
         dots.forEach((d, i) => d.classList.toggle('active', i === dotIdx));
 
         setTimeout(() => {
-            // If we reached the clone slide (index 5)
+            // If we reached the clone slide
             if (currentIdx === totalOriginalSlides) {
                 track.style.transition = 'none';
                 currentIdx = 0;

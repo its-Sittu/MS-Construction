@@ -588,15 +588,15 @@ background:#e4531d;
 
 .about-slider-track {
     display: flex;
-    width: 600%; /* 5 slides + 1 loop clone */
+    width: 700%; /* 6 slides + 1 loop clone */
     height: 100%;
     transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
     will-change: transform;
 }
 
 .about-slide {
-    flex: 0 0 16.666667%;
-    width: 16.666667%;
+    flex: 0 0 14.285714%;
+    width: 14.285714%;
     height: 100%;
     position: relative;
     overflow: hidden;
