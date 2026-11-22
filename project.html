@@ -340,6 +340,7 @@
                         <button class="map-focus-btn active" onclick="focusLocation('all', this)"><span class="focus-dot"></span> All Strategic Zones</button>
                         <button class="map-focus-btn" onclick="focusLocation('delhi', this)"><span class="focus-dot"></span> Delhi (Rail Mantralaya) ★ Major Focus</button>
                         <button class="map-focus-btn" onclick="focusLocation('banaras', this)"><span class="focus-dot"></span> Banaras ★ Major Focus</button>
+                        <button class="map-focus-btn" onclick="focusLocation('ddu', this)"><span class="focus-dot"></span> DDU Division (Mughalsarai) ★ Major Focus</button>
                         <button class="map-focus-btn" onclick="focusLocation('medininagar', this)"><span class="focus-dot"></span> Medininagar (HQ) ★ Major Focus</button>
                         <button class="map-focus-btn" onclick="focusLocation('daltonganj', this)"><span class="focus-dot"></span> Daltonganj ★ Major Focus</button>
                         <button class="map-focus-btn" onclick="focusLocation('dhanbad', this)"><span class="focus-dot"></span> Dhanbad ★ Major Focus</button>
@@ -365,6 +366,13 @@
                             <span class="focus-hub-badge">RAIL VIADUCT & INFRA • MAJOR FOCUS</span>
                             <h4>Banaras (Varanasi)</h4>
                             <p>Eastern railway corridor viaducts, station modernization (ABSS), track doubling & heavy structural execution in Uttar Pradesh.</p>
+                            <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
+                        </div>
+
+                        <div class="focus-hub-card" onclick="focusLocation('ddu')">
+                            <span class="focus-hub-badge">RAIL DIVISION • MAJOR FOCUS</span>
+                            <h4>DDU Division (Mughalsarai)</h4>
+                            <p>East Central Railway (ECR) division operations, yard remodeling, freight transit infrastructure & heavy railway civil execution.</p>
                             <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
                         </div>
 
@@ -534,6 +542,15 @@
                     badge: "RAIL VIADUCT & INFRA • MAJOR FOCUS",
                     desc: "Eastern railway corridor viaducts, station modernization (ABSS), track doubling & heavy structural execution in Uttar Pradesh.",
                     specs: ["Eastern Rail Corridor", "Viaduct Piers", "Station Infrastructure", "Civil Corridors"]
+                },
+                {
+                    id: "ddu",
+                    name: "DDU Division (Mughalsarai)",
+                    title: "DDU Railway Division (Mughalsarai, UP)",
+                    coords: [25.2818, 83.1189],
+                    badge: "RAIL DIVISION • MAJOR FOCUS",
+                    desc: "East Central Railway (ECR) division operations, yard remodeling, freight transit infrastructure & heavy rail civil execution.",
+                    specs: ["ECR Division Hub", "Yard Remodeling", "Freight Corridors", "Heavy Rail Civil"]
                 },
                 {
                     id: "medininagar",
