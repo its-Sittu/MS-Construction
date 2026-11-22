@@ -338,6 +338,8 @@
                     <!-- Map Focus Control Buttons -->
                     <div class="map-controls-bar">
                         <button class="map-focus-btn active" onclick="focusLocation('all', this)"><span class="focus-dot"></span> All Strategic Zones</button>
+                        <button class="map-focus-btn" onclick="focusLocation('delhi', this)"><span class="focus-dot"></span> Delhi (Rail Mantralaya) ★ Major Focus</button>
+                        <button class="map-focus-btn" onclick="focusLocation('banaras', this)"><span class="focus-dot"></span> Banaras ★ Major Focus</button>
                         <button class="map-focus-btn" onclick="focusLocation('medininagar', this)"><span class="focus-dot"></span> Medininagar (HQ) ★ Major Focus</button>
                         <button class="map-focus-btn" onclick="focusLocation('daltonganj', this)"><span class="focus-dot"></span> Daltonganj ★ Major Focus</button>
                         <button class="map-focus-btn" onclick="focusLocation('dhanbad', this)"><span class="focus-dot"></span> Dhanbad ★ Major Focus</button>
@@ -350,8 +352,22 @@
                         <div id="indiaProjectMap"></div>
                     </div>
 
-                    <!-- 5 Major Focus Hubs Grid -->
+                    <!-- Major Focus Hubs Grid -->
                     <div class="focus-hubs-grid">
+                        <div class="focus-hub-card" onclick="focusLocation('delhi')">
+                            <span class="focus-hub-badge">CENTRAL LIAISON • MAJOR FOCUS</span>
+                            <h4>Delhi (Rail Mantralaya)</h4>
+                            <p>Strategic liaison with Ministry of Railways (Rail Mantralaya), Railway Board, national EPC tenders & central project allocations.</p>
+                            <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
+                        </div>
+
+                        <div class="focus-hub-card" onclick="focusLocation('banaras')">
+                            <span class="focus-hub-badge">RAIL VIADUCT & INFRA • MAJOR FOCUS</span>
+                            <h4>Banaras (Varanasi)</h4>
+                            <p>Eastern railway corridor viaducts, station modernization (ABSS), track doubling & heavy structural execution in Uttar Pradesh.</p>
+                            <div class="focus-hub-foot"><i class="fa-solid fa-location-crosshairs"></i> View Pin on Map</div>
+                        </div>
+
                         <div class="focus-hub-card" onclick="focusLocation('medininagar')">
                             <span class="focus-hub-badge">HEADQUARTERS • MAJOR FOCUS</span>
                             <h4>Medininagar</h4>
@@ -499,8 +515,26 @@
             const mapContainer = document.getElementById("indiaProjectMap");
             if (!mapContainer || typeof L === "undefined") return;
 
-            // 5 Major Focus Locations
+            // Major Focus Locations Across India
             const focusHubs = [
+                {
+                    id: "delhi",
+                    name: "Delhi (Rail Mantralaya)",
+                    title: "Delhi (Ministry of Railways / Rail Mantralaya)",
+                    coords: [28.6180, 77.2130],
+                    badge: "CENTRAL LIAISON • MAJOR FOCUS",
+                    desc: "Apex institutional coordination with Ministry of Railways (Rail Mantralaya), Railway Board, and national civil infrastructure tenders.",
+                    specs: ["Rail Mantralaya Liaison", "Railway Board Tenders", "National EPC Works", "Central Sanctions"]
+                },
+                {
+                    id: "banaras",
+                    name: "Banaras (Varanasi)",
+                    title: "Banaras Hub (Varanasi, UP)",
+                    coords: [25.3176, 82.9739],
+                    badge: "RAIL VIADUCT & INFRA • MAJOR FOCUS",
+                    desc: "Eastern railway corridor viaducts, station modernization (ABSS), track doubling & heavy structural execution in Uttar Pradesh.",
+                    specs: ["Eastern Rail Corridor", "Viaduct Piers", "Station Infrastructure", "Civil Corridors"]
+                },
                 {
                     id: "medininagar",
                     name: "Medininagar",
@@ -552,7 +586,7 @@
             const map = L.map("indiaProjectMap", {
                 scrollWheelZoom: false,
                 zoomControl: true
-            }).setView([24.2, 85.0], 8);
+            }).setView([26.2, 82.0], 6);
 
             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 maxZoom: 18,
